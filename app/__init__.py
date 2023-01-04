@@ -1,6 +1,8 @@
 from flask import Flask
 import os
-
+"""
+hola este es el proyecto de mi protfolio
+"""
 def create_app():
     app = Flask(__name__)
 
