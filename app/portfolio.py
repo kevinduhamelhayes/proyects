@@ -2,7 +2,7 @@ from flask import(
     Blueprint, render_template, request, redirect , url_for, current_app
 )
 import sendgrid
-from sendgrid.helpers import mail
+from sendgrid.helpers import mail as sgmail
 bp = Blueprint('portfolio', __name__,url_prefix='/')
 
 @bp.route('/',methods=['GET'])
@@ -25,8 +25,8 @@ def send_email(name, email, message):
     mi_email = 'kevinduhamelh@gmail.com'
     sg = sendgrid.SendGridAPIClient(api_key=current_app.config['SENDGRID_KEY'])
 
-    from_email = mail.Email(mi_email)
-    to_email = mail.To(mi_email, substitutions={
+    from_email = sgmail.Email(mi_email)
+    to_email = sgmail.To(mi_email, substitutions={
         "-name-":name,
         "-email-": email,
         "-message-": message,
@@ -38,5 +38,5 @@ def send_email(name, email, message):
         <p>Correo: -email-<p>
         <p>Mensaje: -message-<p>
     """
-    mail = mail.Mail(mi_email, to_email, "nuevo contacto desde la web", html_content=html_content)
+    mail = sgmail.Mail(mi_email, to_email, "nuevo contacto desde la web", html_content=html_content)
     response = sg.client.mail.send.post(request_body=mail.get())
